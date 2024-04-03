@@ -32,7 +32,8 @@ public class ControlledRobot implements Robot {
 
     @Override
     public void turn(int i) {
-
+        angle += i *45;
+        angle %= 360;
     }
 
     @Override

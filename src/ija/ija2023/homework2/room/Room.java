@@ -6,7 +6,10 @@ import ija.ija2023.homework2.common.Obstacle;
 import ija.ija2023.homework2.common.Robot;
 import ija.ija2023.homework2.tool.common.ToolRobot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Room implements Environment {
 
@@ -78,7 +81,14 @@ public class Room implements Environment {
 
     @Override
     public List<ToolRobot> robots() {
-        return null;
+        List<ToolRobot> robots = new ArrayList<>();
+        for (Object[] objArray : room) {
+            for (Object obj : objArray) {
+                if (obj instanceof Robot)
+                    robots.add((ToolRobot) obj);
+            }
+        }
+        return robots;
     }
 
     @Override
