@@ -31,6 +31,11 @@ public class ControlledRobot implements Robot {
     }
 
     @Override
+    public void turn(int i) {
+
+    }
+
+    @Override
     public boolean canMove() {
         Position nextPos = getNextPos();
         return !env.barrierAt(nextPos);
@@ -69,8 +74,21 @@ public class ControlledRobot implements Robot {
     @Override
     public void turn() {
         angle += 45;
-        if (angle >= 360) {
-            angle = angle % 360;
-        }
+        angle = angle % 360;
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void notifyObservers() {
+
     }
 }
