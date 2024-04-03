@@ -7,9 +7,7 @@ import ija.ija2023.homework2.common.Robot;
 import ija.ija2023.homework2.tool.common.ToolRobot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Room implements Environment {
 
@@ -71,12 +69,12 @@ public class Room implements Environment {
 
     @Override
     public int rows() {
-        return 0;
+        return room.length;
     }
 
     @Override
     public int cols() {
-        return 0;
+        return room[0].length;
     }
 
     @Override

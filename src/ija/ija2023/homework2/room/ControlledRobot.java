@@ -1,10 +1,11 @@
 package ija.ija2023.homework2.room;
 
 import ija.ija2023.homework2.common.Environment;
+import ija.ija2023.homework2.tool.common.AbstractObservableRobot;
 import ija.ija2023.homework2.tool.common.Position;
 import ija.ija2023.homework2.common.Robot;
 
-public class ControlledRobot implements Robot {
+public class ControlledRobot extends AbstractObservableRobot implements Robot {
 
     private Position pos;
     private int angle;
@@ -34,6 +35,7 @@ public class ControlledRobot implements Robot {
     public void turn(int i) {
         angle += i *45;
         angle %= 360;
+        this.notifyObservers();
     }
 
     @Override
@@ -67,6 +69,7 @@ public class ControlledRobot implements Robot {
             Position nextPos = getNextPos();
             env.moveRobot(pos, nextPos);
             pos = nextPos;
+            this.notifyObservers();
             return true;
         }
         return false;
@@ -76,20 +79,21 @@ public class ControlledRobot implements Robot {
     public void turn() {
         angle += 45;
         angle = angle % 360;
+        this.notifyObservers();
     }
 
     @Override
     public void addObserver(Observer observer) {
-
+        super.addObserver(observer);
     }
 
     @Override
     public void removeObserver(Observer observer) {
-
+        super.removeObserver(observer);
     }
 
     @Override
     public void notifyObservers() {
-
+        super.notifyObservers();
     }
 }
