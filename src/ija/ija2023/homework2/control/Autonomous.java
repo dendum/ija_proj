@@ -6,11 +6,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Autonomous {
-    public static void handleAutonomous(Robot r, Environment e){
+    public static void handleAutonomous(Robot r, Environment e, int sleep){
         while(true){
             if(!r.move())
                 r.turn();
-            sleep(500);
+            sleep(sleep);
         }
     };
     private static void sleep(int ms) {
