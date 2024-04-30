@@ -3,10 +3,13 @@
  * Spuštění presentéru (vizualizace) implementace modelu bludiště.
  */
 
+import netscape.javascript.JSObject;
+import org.json.*;
 import ija.ija2023.homework2.control.runAutonomous;
 import ija.ija2023.homework2.room.ControlledRobot;
 import ija.ija2023.homework2.room.Room;
 import ija.ija2023.homework2.control.Autonomous;
+import org.json.simple.JSONObject;
 import tool.EnvPresenter;
 
 import java.util.logging.Level;
