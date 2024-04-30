@@ -1,4 +1,4 @@
-package ija.ija2023.homework2.tool.common;
+package tool.common;
 
 public class Position {
    private final int x;

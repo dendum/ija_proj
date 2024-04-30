@@ -1,7 +1,7 @@
 package ija.ija2023.homework2.common;
 
-import ija.ija2023.homework2.tool.common.Position;
-import ija.ija2023.homework2.tool.common.ToolRobot;
+import tool.common.Position;
+import tool.common.ToolRobot;
 
 public interface Robot extends ToolRobot {
 

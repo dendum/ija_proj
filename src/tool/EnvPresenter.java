@@ -1,9 +1,9 @@
-package ija.ija2023.homework2.tool;
+package tool;
 
-import ija.ija2023.homework2.tool.common.Position;
-import ija.ija2023.homework2.tool.common.ToolEnvironment;
-import ija.ija2023.homework2.tool.view.FieldView;
-import ija.ija2023.homework2.tool.view.RobotView;
+import tool.common.Position;
+import tool.common.ToolEnvironment;
+import tool.view.FieldView;
+import tool.view.RobotView;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.lang.reflect.InvocationTargetException;

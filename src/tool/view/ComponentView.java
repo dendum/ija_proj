@@ -1,6 +1,6 @@
-package ija.ija2023.homework2.tool.view;
+package tool.view;
 
-import ija.ija2023.homework2.tool.common.ToolRobot;
+import tool.common.ToolRobot;
 import java.awt.Graphics;
 
 public interface ComponentView {

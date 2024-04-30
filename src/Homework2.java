@@ -5,7 +5,7 @@
 
 import ija.ija2023.homework2.room.ControlledRobot;
 import ija.ija2023.homework2.room.Room;
-import ija.ija2023.homework2.tool.EnvPresenter;
+import tool.EnvPresenter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 //--- Importy z baliku dodaneho nastroje
 
-import ija.ija2023.homework2.tool.common.Position;
+import tool.common.Position;
 import ija.ija2023.homework2.common.Robot;
 import ija.ija2023.homework2.common.Environment;
 /**

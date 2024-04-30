@@ -1,9 +1,9 @@
-package ija.ija2023.homework2.tool;
+package tool;
 
-import ija.ija2023.homework2.tool.common.ToolEnvironment;
-import ija.ija2023.homework2.tool.common.ToolRobot;
-import ija.ija2023.homework2.tool.view.ComponentView;
-import ija.ija2023.homework2.tool.view.FieldView;
+import tool.common.ToolEnvironment;
+import tool.common.ToolRobot;
+import tool.view.ComponentView;
+import tool.view.FieldView;
 import java.util.List;
 import java.util.stream.Collectors;
 

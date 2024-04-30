@@ -1,8 +1,8 @@
-package ija.ija2023.homework2.tool.view;
+package tool.view;
 
-import ija.ija2023.homework2.tool.EnvPresenter;
-import ija.ija2023.homework2.tool.common.Observable;
-import ija.ija2023.homework2.tool.common.ToolRobot;
+import tool.EnvPresenter;
+import tool.common.Observable;
+import tool.common.ToolRobot;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

@@ -1,4 +1,4 @@
-package ija.ija2023.homework2.tool.common;
+package tool.common;
 
 import java.util.HashSet;
 import java.util.Set;

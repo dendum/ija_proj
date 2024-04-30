@@ -16,10 +16,10 @@ import ija.ija2023.homework2.room.Room;
 //---
 
 //--- Importy z baliku dodaneho nastroje
-import ija.ija2023.homework2.tool.EnvTester;
-import ija.ija2023.homework2.tool.common.Position;
-import ija.ija2023.homework2.tool.common.ToolEnvironment;
-import ija.ija2023.homework2.tool.common.ToolRobot;
+import tool.EnvTester;
+import tool.common.Position;
+import tool.common.ToolEnvironment;
+import tool.common.ToolRobot;
 import java.util.function.Function;
 
 

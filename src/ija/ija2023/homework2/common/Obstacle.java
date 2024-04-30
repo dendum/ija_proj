@@ -1,6 +1,6 @@
 package ija.ija2023.homework2.common;
 
-import ija.ija2023.homework2.tool.common.Position;
+import tool.common.Position;
 
 public class Obstacle {
 
