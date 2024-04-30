@@ -4,14 +4,20 @@
  */
 
 import netscape.javascript.JSObject;
-import org.json.*;
+import org.json.simple.*;
 import ija.ija2023.homework2.control.runAutonomous;
 import ija.ija2023.homework2.room.ControlledRobot;
 import ija.ija2023.homework2.room.Room;
 import ija.ija2023.homework2.control.Autonomous;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import tool.EnvPresenter;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,31 +43,44 @@ public class Homework2 {
 
     public static void main(String... args) {
 
-        Environment room = Room.create(5, 8);
+        Object obj = null;
+        try{
+            obj = new JSONParser().parse(new FileReader("src/field.json"));
+        }catch (IOException | ParseException ex){
+            Logger.getLogger(Autonomous.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-        room.createObstacleAt(1, 2);
-        room.createObstacleAt(1, 4);
-        room.createObstacleAt(1, 5);
-        room.createObstacleAt(2, 5);
+        JSONObject jo = (JSONObject) obj;
 
-        Position p1 = new Position(4, 2);
-        Robot r1 = ControlledRobot.create(room, p1);
-        Position p2 = new Position(4, 7);
-        Robot r2 = ControlledRobot.create(room, p2);
-        r2.turn(2);
+        JSONArray obstacleArray = (JSONArray) jo.get("obstacles");
+        JSONArray robotArray = (JSONArray) jo.get("robots");
+        JSONArray roomSize = (JSONArray) jo.get("room");
 
-        Robot[] robots = new Robot[5];
-        Position[] positions = new Position[5];
-        int[] sleep = new int[5];
+        Environment room = Room.create(((Long) roomSize.get(0)).intValue(), ((Long) roomSize.get(1)).intValue());
 
-        robots[0] = r1;
-        robots[1] = r2;
+        Iterator obs = obstacleArray.iterator();
+        while(obs.hasNext()){
+            JSONArray array = (JSONArray) obs.next();
+            System.out.print("Row ");
+            System.out.print(array.get(0));
+            System.out.print(" Col ");
+            System.out.print(array.get(1));
+            System.out.println();
+            room.createObstacleAt(((Long) array.get(0)).intValue(), ((Long) array.get(1)).intValue());
+        }
 
-        positions[0] = p1;
-        positions[1] = p2;
-
-        sleep[0] = 400;
-        sleep[1] = 700;
+        //Each element is an array of 3 values: x, y, and delay between robots movements
+        Iterator rob = robotArray.iterator();
+        Robot[] robots = new Robot[robotArray.size()];
+        int[] sleep = new int[robotArray.size()];
+        int j = 0;
+        while(rob.hasNext()){
+            JSONArray array = (JSONArray) rob.next();
+            Position p = new Position(((Long) array.get(0)).intValue(), ((Long) array.get(1)).intValue());
+            robots[j] = ControlledRobot.create(room, p);
+            sleep[j] = ((Long) array.get(2)).intValue();
+            j++;
+        }
 
         EnvPresenter presenter = new EnvPresenter(room);
         presenter.open();
