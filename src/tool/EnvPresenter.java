@@ -75,8 +75,8 @@ public class EnvPresenter {
       }
 
       this.env.robots().forEach((var1x) -> {
-         RobotView var2 = new RobotView(this, var1x);
-         this.robots.add(var2);
+         RobotView var2_1 = new RobotView(this, var1x);
+         this.robots.add(var2_1);
       });
       this.frame.getContentPane().add(var4, "Center");
       this.frame.pack();
