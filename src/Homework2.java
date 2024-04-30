@@ -5,9 +5,11 @@
 
 import ija.ija2023.homework2.room.ControlledRobot;
 import ija.ija2023.homework2.room.Room;
+import ija.ija2023.homework2.control.Autonomous;
 import tool.EnvPresenter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 //--- Importy z implementovaneho reseni ukolu
 
@@ -34,33 +36,15 @@ public class Homework2 {
         room.createObstacleAt(1, 4);
         room.createObstacleAt(1, 5);
         room.createObstacleAt(2, 5);
+        room.createObstacleAt(4,7);
 
         Position p1 = new Position(4,2);
-        Robot r1 = ControlledRobot.create(room, p1);        
-        Position p2 = new Position(4,7);
-        Robot r2 = ControlledRobot.create(room, p2);
-        r2.turn(6);
+        Robot r1 = ControlledRobot.create(room, p1);
         
         EnvPresenter presenter = new EnvPresenter(room);
         presenter.open();
 
-        sleep(1000);
-        r1.move();
-        sleep(1000);
-        r1.turn();
-        sleep(1000);
-        r1.move();
-        r2.move();
-        sleep(1000);
-        r1.turn(7);
-        sleep(1000);
-        r1.move();
-        r2.move();
-        sleep(1000);
-        r1.move();
-        sleep(1000);
-        r1.turn(2);
-        r2.turn(2);
+        Autonomous.handleAutonomous(r1, room);
 
     }
 
