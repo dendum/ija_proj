@@ -31,7 +31,7 @@ import ija.ija2023.homework2.common.Environment;
  *
  * @author Radek Kočí
  */
-public class main {
+public class Main {
 
     public static void main(String... args) {
 
@@ -67,7 +67,7 @@ public class main {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException ex) {
-            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
