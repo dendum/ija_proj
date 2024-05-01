@@ -3,6 +3,7 @@
  * Spuštění presentéru (vizualizace) implementace modelu bludiště.
  */
 
+import ija.ija2023.homework2.room.ParserJSON;
 import netscape.javascript.JSObject;
 import org.json.simple.*;
 import ija.ija2023.homework2.control.runAutonomous;
@@ -43,50 +44,20 @@ public class Homework2 {
 
     public static void main(String... args) {
 
-        Object obj = null;
-        try{
-            obj = new JSONParser().parse(new FileReader("src/field.json"));
-        }catch (IOException | ParseException ex){
-            Logger.getLogger(Autonomous.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ParserJSON parser = new ParserJSON();
+        parser.parse();
 
-        JSONObject jo = (JSONObject) obj;
+        Environment room = Room.create(((Long) parser.roomSize.get(0)).intValue(), ((Long) parser.roomSize.get(1)).intValue());
+        Robot[] robots = new Robot[parser.robotArray.size()];
+        int[] sleep = new int[parser.robotArray.size()];
 
-        JSONArray obstacleArray = (JSONArray) jo.get("obstacles");
-        JSONArray robotArray = (JSONArray) jo.get("robots");
-        JSONArray roomSize = (JSONArray) jo.get("room");
-
-        Environment room = Room.create(((Long) roomSize.get(0)).intValue(), ((Long) roomSize.get(1)).intValue());
-
-        Iterator obs = obstacleArray.iterator();
-        while(obs.hasNext()){
-            JSONArray array = (JSONArray) obs.next();
-            System.out.print("Row ");
-            System.out.print(array.get(0));
-            System.out.print(" Col ");
-            System.out.print(array.get(1));
-            System.out.println();
-            room.createObstacleAt(((Long) array.get(0)).intValue(), ((Long) array.get(1)).intValue());
-        }
-
-        //Each element is an array of 3 values: x, y, and delay between robots movements
-        Iterator rob = robotArray.iterator();
-        Robot[] robots = new Robot[robotArray.size()];
-        int[] sleep = new int[robotArray.size()];
-        int j = 0;
-        while(rob.hasNext()){
-            JSONArray array = (JSONArray) rob.next();
-            Position p = new Position(((Long) array.get(0)).intValue(), ((Long) array.get(1)).intValue());
-            robots[j] = ControlledRobot.create(room, p);
-            sleep[j] = ((Long) array.get(2)).intValue();
-            j++;
-        }
+        init(room, robots, sleep, parser);
 
         EnvPresenter presenter = new EnvPresenter(room);
         presenter.open();
 
         Thread[] threads = new Thread[5];
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             Runnable run = new runAutonomous(robots[i], room, sleep[i]);
             threads[i] = new Thread(run);
             threads[i].start();
@@ -104,6 +75,24 @@ public class Homework2 {
             Thread.sleep(ms);
         } catch (InterruptedException ex) {
             Logger.getLogger(Homework2.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void init(Environment room, Robot[] robots, int[] sleep, ParserJSON parser){
+        for (Object o : parser.obstacleArray) {
+            JSONArray array = (JSONArray) o;
+            room.createObstacleAt(((Long) array.get(0)).intValue(), ((Long) array.get(1)).intValue());
+        }
+
+        //Each element is an array of 3 values: x, y, and delay between robots movements
+
+        int j = 0;
+        for(Object o : parser.robotArray){
+            JSONArray array = (JSONArray) o;
+            Position p = new Position(((Long) array.get(0)).intValue(), ((Long) array.get(1)).intValue());
+            robots[j] = ControlledRobot.create(room, p);
+            sleep[j] = ((Long) array.get(2)).intValue();
+            j++;
         }
     }
 }
