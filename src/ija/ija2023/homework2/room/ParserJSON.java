@@ -25,6 +25,7 @@ public class ParserJSON {
             Logger.getLogger(Autonomous.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+
         JSONObject jo = (JSONObject) obj;
 
         obstacleArray = (JSONArray) jo.get("obstacles");
