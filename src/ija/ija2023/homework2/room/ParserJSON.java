@@ -12,10 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ParserJSON {
-    public JSONArray obstacleArray;
-    public JSONArray robotArray;
-    public JSONArray roomSize;
-
+    private JSONArray obstacleArray;
+    private JSONArray robotArray;
+    private JSONArray roomSize;
     public void parse(){
 
         Object obj = null;
@@ -31,6 +30,16 @@ public class ParserJSON {
         obstacleArray = (JSONArray) jo.get("obstacles");
         robotArray = (JSONArray) jo.get("robots");
         roomSize = (JSONArray) jo.get("room");
+    }
+
+    public JSONArray getObstacles(){
+        return obstacleArray;
+    }
+    public JSONArray getRobots(){
+        return robotArray;
+    }
+    public JSONArray getRoom(){
+        return roomSize;
     }
 
 }

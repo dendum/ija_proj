@@ -47,9 +47,9 @@ public class Homework2 {
         ParserJSON parser = new ParserJSON();
         parser.parse();
 
-        Environment room = Room.create(((Long) parser.roomSize.get(0)).intValue(), ((Long) parser.roomSize.get(1)).intValue());
-        Robot[] robots = new Robot[parser.robotArray.size()];
-        int[] sleep = new int[parser.robotArray.size()];
+        Environment room = Room.create(((Long) parser.getRoom().get(0)).intValue(), ((Long) parser.getRoom().get(1)).intValue());
+        Robot[] robots = new Robot[parser.getRobots().size()];
+        int[] sleep = new int[parser.getRobots().size()];
 
         init(room, robots, sleep, parser);
 
@@ -57,11 +57,13 @@ public class Homework2 {
         presenter.open();
 
         Thread[] threads = new Thread[5];
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < parser.getRobots().size(); i++) {
             Runnable run = new runAutonomous(robots[i], room, sleep[i]);
             threads[i] = new Thread(run);
             threads[i].start();
         }
+
+
 
     }
 
@@ -79,7 +81,7 @@ public class Homework2 {
     }
 
     public static void init(Environment room, Robot[] robots, int[] sleep, ParserJSON parser){
-        for (Object o : parser.obstacleArray) {
+        for (Object o : parser.getObstacles()) {
             JSONArray array = (JSONArray) o;
             room.createObstacleAt(((Long) array.get(0)).intValue(), ((Long) array.get(1)).intValue());
         }
@@ -87,7 +89,7 @@ public class Homework2 {
         //Each element is an array of 3 values: x, y, and delay between robots movements
 
         int j = 0;
-        for(Object o : parser.robotArray){
+        for(Object o : parser.getRobots()){
             JSONArray array = (JSONArray) o;
             Position p = new Position(((Long) array.get(0)).intValue(), ((Long) array.get(1)).intValue());
             robots[j] = ControlledRobot.create(room, p);
