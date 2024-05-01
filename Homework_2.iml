@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="ijatool" level="project" />
     <orderEntry type="library" name="junit-platform-console-standalone-1.6.0" level="project" />
+    <orderEntry type="library" name="json-simple-1.1 (2)" level="project" />
   </component>
 </module>

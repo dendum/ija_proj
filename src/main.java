@@ -4,21 +4,12 @@
  */
 
 import ija.ija2023.homework2.room.ParserJSON;
-import netscape.javascript.JSObject;
 import org.json.simple.*;
 import ija.ija2023.homework2.control.runAutonomous;
 import ija.ija2023.homework2.room.ControlledRobot;
 import ija.ija2023.homework2.room.Room;
-import ija.ija2023.homework2.control.Autonomous;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import tool.EnvPresenter;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,7 +31,7 @@ import ija.ija2023.homework2.common.Environment;
  *
  * @author Radek Kočí
  */
-public class Homework2 {
+public class main {
 
     public static void main(String... args) {
 
@@ -76,7 +67,7 @@ public class Homework2 {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException ex) {
-            Logger.getLogger(Homework2.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
