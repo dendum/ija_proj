@@ -87,7 +87,6 @@ public class Homework2 {
         }
 
         //Each element is an array of 3 values: x, y, and delay between robots movements
-
         int j = 0;
         for(Object o : parser.getRobots()){
             JSONArray array = (JSONArray) o;
