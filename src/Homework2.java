@@ -55,6 +55,7 @@ public class Homework2 {
         r1.turn(7);
         sleep(1000);
         r1.move();
+        sleep(1000);
         r2.move();
         sleep(1000);
         r1.move();

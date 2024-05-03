@@ -4,8 +4,9 @@ import tool.common.Position;
 import tool.common.ToolEnvironment;
 import tool.view.FieldView;
 import tool.view.RobotView;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import tool.view.MapView;
+
+import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,15 +14,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 public class EnvPresenter {
    private final ToolEnvironment env;
    private Map<Position, FieldView> fields;
    private List<RobotView> robots;
    private JFrame frame;
+   public MapView var4;
 
    public EnvPresenter(ToolEnvironment var1) {
       this.env = var1;
@@ -63,7 +63,7 @@ public class EnvPresenter {
       int var1 = this.env.rows();
       int var2 = this.env.cols();
       GridLayout var3 = new GridLayout(var1, var2);
-      JPanel var4 = new JPanel(var3);
+      var4 = new MapView(var3, this.robots);
 
       for(int var5 = 0; var5 < var1; ++var5) {
          for(int var6 = 0; var6 < var2; ++var6) {
@@ -74,9 +74,10 @@ public class EnvPresenter {
          }
       }
 
+
       this.env.robots().forEach((var1x) -> {
-         RobotView var2 = new RobotView(this, var1x);
-         this.robots.add(var2);
+         RobotView var2_1 = new RobotView(this, var1x);
+         this.robots.add(var2_1);
       });
       this.frame.getContentPane().add(var4, "Center");
       this.frame.pack();
@@ -84,5 +85,9 @@ public class EnvPresenter {
 
    protected List<FieldView> fields() {
       return new ArrayList(this.fields.values());
+   }
+
+   public void paintRobot() {
+      this.var4.repaint();
    }
 }
