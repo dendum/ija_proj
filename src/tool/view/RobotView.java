@@ -77,20 +77,33 @@ public class RobotView implements ComponentView, Observable.Observer {
         double stepX = dx / 100;
         double stepY = dy / 100;
 
-        this.movementTimer = new Timer(10, new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                position_X += stepX;
-                position_Y += stepY;
+        while (!(Math.abs(position_X - dest_position_X) < 0.1 && Math.abs(position_Y - dest_position_Y) < 0.1)) {
+            position_X += stepX;
+            position_Y += stepY;
 
-                parent.var4.repaint();
-//                SwingUtilities.invokeLater(() -> parent.var4.repaint());
-
-                if (Math.abs(position_X - dest_position_X) < 0.1 && Math.abs(position_Y - dest_position_Y) < 0.1) {
-                    ((Timer) arg0.getSource()).stop();
-                }
+//                parent.var4.repaint();
+            SwingUtilities.invokeLater(() -> parent.var4.repaint());
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-        });
-        movementTimer.start();
+        }
+
+//        this.movementTimer = new Timer(10, new ActionListener() {
+//            public void actionPerformed(ActionEvent arg0) {
+//                position_X += stepX;
+//                position_Y += stepY;
+//
+//                parent.var4.repaint();
+//                SwingUtilities.invokeLater(() -> parent.var4.repaint());
+//
+//                if (Math.abs(position_X - dest_position_X) < 0.1 && Math.abs(position_Y - dest_position_Y) < 0.1) {
+//                    ((Timer) arg0.getSource()).stop();
+//                }
+//            }
+//        });
+//        movementTimer.start();
     }
 
     public final void update(Observable var1) {
