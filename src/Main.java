@@ -10,6 +10,8 @@ import ija.ija2023.homework2.room.ControlledRobot;
 import ija.ija2023.homework2.room.Room;
 import tool.EnvPresenter;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,6 +39,7 @@ public class Main {
 
         ParserJSON parser = new ParserJSON();
         parser.parse();
+        //BlockingQueue<int[]> queue = new LinkedBlockingQueue<>();
 
         Environment room = Room.create(((Long) parser.getRoom().get(0)).intValue(), ((Long) parser.getRoom().get(1)).intValue());
         Robot[] robots = new Robot[parser.getRobots().size()];
@@ -54,7 +57,17 @@ public class Main {
             threads[i].start();
         }
 
+//        try {
+//            while (true) {
+//                int[] new_robot = queue.take();
+//            }
+//        }catch(InterruptedException e){
+//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
+//        }
 
+//        for(int i = 0; i < all_robots; i++){
+//            threads[i].join();
+//        }
 
     }
 
@@ -71,7 +84,7 @@ public class Main {
         }
     }
 
-    public static void init(Environment room, Robot[] robots, int[] sleep, ParserJSON parser){
+    public static void init(Environment room, Robot[] robots, int[] sleep, ParserJSON parser) {
         for (Object o : parser.getObstacles()) {
             JSONArray array = (JSONArray) o;
             room.createObstacleAt(((Long) array.get(0)).intValue(), ((Long) array.get(1)).intValue());
@@ -79,7 +92,7 @@ public class Main {
 
         //Each element is an array of 3 values: x, y, and delay between robots movements
         int j = 0;
-        for(Object o : parser.getRobots()){
+        for (Object o : parser.getRobots()) {
             JSONArray array = (JSONArray) o;
             Position p = new Position(((Long) array.get(0)).intValue(), ((Long) array.get(1)).intValue());
             robots[j] = ControlledRobot.create(room, p);
