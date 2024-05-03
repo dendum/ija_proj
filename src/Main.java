@@ -10,6 +10,7 @@ import ija.ija2023.homework2.room.ControlledRobot;
 import ija.ija2023.homework2.room.Room;
 import tool.EnvPresenter;
 
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
@@ -39,7 +40,7 @@ public class Main {
 
         ParserJSON parser = new ParserJSON();
         parser.parse();
-        //BlockingQueue<int[]> queue = new LinkedBlockingQueue<>();
+        BlockingQueue<int[]> queue = new LinkedBlockingQueue<>();
 
         Environment room = Room.create(((Long) parser.getRoom().get(0)).intValue(), ((Long) parser.getRoom().get(1)).intValue());
         Robot[] robots = new Robot[parser.getRobots().size()];
@@ -47,24 +48,36 @@ public class Main {
 
         init(room, robots, sleep, parser);
 
-        EnvPresenter presenter = new EnvPresenter(room);
+        EnvPresenter presenter = new EnvPresenter(room, queue);
         presenter.open();
 
-        Thread[] threads = new Thread[5];
+        ArrayList<Thread> threads = new ArrayList<Thread>();
         for (int i = 0; i < parser.getRobots().size(); i++) {
             Runnable run = new runAutonomous(robots[i], room, sleep[i]);
-            threads[i] = new Thread(run);
-            threads[i].start();
+            threads.add(new Thread(run));
+            threads.get(i).start();
         }
 
-//        try {
-//            while (true) {
-//                int[] new_robot = queue.take();
-//            }
-//        }catch(InterruptedException e){
-//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
-//        }
+        try {
+            while (true) {
+                int[] robot_coordinates = queue.take();
+                Robot new_robot = ControlledRobot.create(room, new Position(robot_coordinates[1], robot_coordinates[0]));
+                presenter.add_thread_Robot(new_robot);
+                Runnable run = new runAutonomous(new_robot, room, 100);
+                threads.add(new Thread(run));
+                threads.get(threads.size()-1).start();
+            }
+        } catch (InterruptedException e) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
+        }
 
+        for(Thread thread : threads){
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 //        for(int i = 0; i < all_robots; i++){
 //            threads[i].join();
 //        }
@@ -100,4 +113,9 @@ public class Main {
             j++;
         }
     }
+
+    public void queue_processor(){
+
+    }
+
 }

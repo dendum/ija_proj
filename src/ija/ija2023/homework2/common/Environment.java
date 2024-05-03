@@ -2,6 +2,7 @@ package ija.ija2023.homework2.common;
 
 import tool.common.Position;
 import tool.common.ToolEnvironment;
+import tool.common.ToolRobot;
 
 public interface Environment extends ToolEnvironment {
     void addRobot(Robot robot);
