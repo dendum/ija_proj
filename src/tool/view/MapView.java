@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
 
-public class MapView extends JPanel implements KeyListener {
+public class MapView extends JPanel {
 
     private List<RobotView> robots;
 
@@ -35,20 +35,5 @@ public class MapView extends JPanel implements KeyListener {
         for (RobotView robot : this.robots) {
             robot.draw(g);
         }
-    }
-
-    @Override
-    public void keyTyped(KeyEvent keyEvent) {
-        System.out.println("Key typed" + keyEvent.getKeyCode());
-    }
-
-    @Override
-    public void keyPressed(KeyEvent keyEvent) {
-        System.out.println("Key pressed" + keyEvent.getKeyCode());
-    }
-
-    @Override
-    public void keyReleased(KeyEvent keyEvent) {
-        System.out.println("Key released" + keyEvent.getKeyCode());
     }
 }
