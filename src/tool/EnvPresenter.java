@@ -29,11 +29,14 @@ public class EnvPresenter {
     private BlockingQueue<int[]> queue;
     private Robot active_robot;
 
+    private boolean in_process;
+
     public EnvPresenter(ToolEnvironment var1, BlockingQueue<int[]> q) {
         this.env = var1;
         this.queue = q;
         this.fields = new HashMap();
         this.robots = new ArrayList();
+        in_process = false;
     }
 
     public void open() {
@@ -136,14 +139,17 @@ public class EnvPresenter {
         var4.getActionMap().put("up pressed", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (active_robot != null) {
+                if (active_robot != null && !in_process) {
                     System.out.println("up key pressed");
                     System.out.println("Angle is" + active_robot.angle());
                     new SwingWorker<Void, Void>() {
                         @Override
                         protected Void doInBackground() {
+                            in_process = true;
                             active_robot.move();
+                            in_process = false;
                             return null;
+
                         }
                     }.execute();
                 }
@@ -154,14 +160,16 @@ public class EnvPresenter {
         var4.getActionMap().put("down pressed", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (active_robot != null) {
+                if (active_robot != null && !in_process) {
                     System.out.println("down key pressed");
                     new SwingWorker<Void, Void>() {
                         @Override
                         protected Void doInBackground() {
+                            in_process = true;
                             active_robot.turn(4);
                             System.out.println("Angle is" + active_robot.angle());
                             active_robot.move();
+                            in_process = false;
                             return null;
                         }
                     }.execute();
@@ -173,13 +181,15 @@ public class EnvPresenter {
         var4.getActionMap().put("left pressed", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (active_robot != null) {
+                if (active_robot != null && !in_process) {
                     System.out.println("left key pressed");
                     new SwingWorker<Void, Void>() {
                         @Override
                         protected Void doInBackground() {
+                            in_process = true;
                             active_robot.turn(-1);
                             System.out.println("Angle is" + active_robot.angle());
+                            in_process = false;
                             return null;
                         }
                     }.execute();
@@ -192,12 +202,14 @@ public class EnvPresenter {
         var4.getActionMap().put("right pressed", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (active_robot != null) {
+                if (active_robot != null && !in_process) {
                     System.out.println("right key pressed");
                     new SwingWorker<Void, Void>() {
                         @Override
                         protected Void doInBackground() {
+                            in_process = true;
                             active_robot.turn();
+                            in_process = false;
                             return null;
                         }
                     }.execute();
