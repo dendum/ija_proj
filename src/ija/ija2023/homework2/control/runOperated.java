@@ -6,7 +6,8 @@
 //public class runOperated implements Runnable {
 //    private Robot r;
 //    private Environment e;
-//    private int sleep;
+////    private int sleep;
+//    private
 //
 //    public runOperated(Robot new_r, Environment new_e, int new_sleep) {
 //        r = new_r;
@@ -16,6 +17,6 @@
 //
 //    @Override
 //    public void run() {
-//        Operated.handleOperated(r, e, sleep);
+//        Operated.handleOperated(r, e, sleep, queue);
 //    }
 //}

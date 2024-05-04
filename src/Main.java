@@ -98,8 +98,6 @@ public class Main {
             JSONArray array = (JSONArray) o;
             room.createObstacleAt(((Long) array.get(0)).intValue(), ((Long) array.get(1)).intValue());
         }
-
-        //Each element is an array of 3 values: x, y, and delay between robots movements
         int j = 0;
         for (Object o : parser.getRobots()) {
             JSONArray array = (JSONArray) o;
@@ -113,7 +111,6 @@ public class Main {
     public static void queue_processor(int[] robot_info, Environment room, EnvPresenter presenter, ArrayList<Thread> threads) {
         Robot new_robot = ControlledRobot.create(room, new Position(robot_info[1], robot_info[0]));
         presenter.add_thread_Robot(new_robot);
-        //Runnable run = (robot_info[2] == 1) ? new runAutonomous(new_robot, room, 100) : new runOperated(new_robot, room, 100);
         if (robot_info[2] == 1) {
             Runnable run = new runAutonomous(new_robot, room, 100);
             threads.add(new Thread(run));

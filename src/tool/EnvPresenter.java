@@ -106,6 +106,31 @@ public class EnvPresenter {
             }
         });
 
+//        var4.setFocusable(true);
+//        var4.requestFocusInWindow();
+//
+//        var4.addKeyListener(new KeyAdapter() {
+//            @Override
+//            public void keyPressed(KeyEvent e) {
+//                int keyCode = e.getKeyCode();
+//                char keyChar = e.getKeyChar();
+//                System.out.println("Key code: " + keyCode + ", Key character: " + keyChar);
+//                if (keyCode == 38) {
+//                    System.out.println("up key pressed");
+//                    System.out.println("Angle is" + active_robot.angle());
+//
+////                    active_robot.move();
+//                    new SwingWorker<Void, Void>() {
+//                        @Override
+//                        protected Void doInBackground() {
+//                            active_robot.move();
+//                            return null;
+//                        }
+//                    }.execute();
+//                }
+//            }
+//        });
+
         //Arrows keys listener
         var4.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false), "up pressed");
         var4.getActionMap().put("up pressed", new AbstractAction() {
@@ -114,7 +139,13 @@ public class EnvPresenter {
                 if (active_robot != null) {
                     System.out.println("up key pressed");
                     System.out.println("Angle is" + active_robot.angle());
-                    active_robot.move();
+                    new SwingWorker<Void, Void>() {
+                        @Override
+                        protected Void doInBackground() {
+                            active_robot.move();
+                            return null;
+                        }
+                    }.execute();
                 }
             }
         });
@@ -125,9 +156,15 @@ public class EnvPresenter {
             public void actionPerformed(ActionEvent e) {
                 if (active_robot != null) {
                     System.out.println("down key pressed");
-                    active_robot.turn(4);
-                    System.out.println("Angle is" + active_robot.angle());
-                    active_robot.move();
+                    new SwingWorker<Void, Void>() {
+                        @Override
+                        protected Void doInBackground() {
+                            active_robot.turn(4);
+                            System.out.println("Angle is" + active_robot.angle());
+                            active_robot.move();
+                            return null;
+                        }
+                    }.execute();
                 }
             }
         });
@@ -138,8 +175,15 @@ public class EnvPresenter {
             public void actionPerformed(ActionEvent e) {
                 if (active_robot != null) {
                     System.out.println("left key pressed");
-                    active_robot.turn(-1);
-                    System.out.println("Angle is" + active_robot.angle());
+                    new SwingWorker<Void, Void>() {
+                        @Override
+                        protected Void doInBackground() {
+                            active_robot.turn(-1);
+                            System.out.println("Angle is" + active_robot.angle());
+                            return null;
+                        }
+                    }.execute();
+
                 }
             }
         });
@@ -150,7 +194,13 @@ public class EnvPresenter {
             public void actionPerformed(ActionEvent e) {
                 if (active_robot != null) {
                     System.out.println("right key pressed");
-                    active_robot.turn();
+                    new SwingWorker<Void, Void>() {
+                        @Override
+                        protected Void doInBackground() {
+                            active_robot.turn();
+                            return null;
+                        }
+                    }.execute();
                     System.out.println("Angle is" + active_robot.angle());
                 }
             }

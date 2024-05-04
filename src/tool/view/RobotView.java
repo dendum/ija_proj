@@ -37,9 +37,27 @@ public class RobotView implements ComponentView, Observable.Observer {
         this.parent = var1;
         var2.addObserver(this);
         this.current = this.parent.fieldAt(this.model.getPosition());
+        firstDraw();
 //      this.privUpdate();
     }
 
+    private void firstDraw() {
+        Rectangle cur = this.current.getBounds();
+
+        double width = cur.getWidth();
+        double height = cur.getHeight();
+        double curposX = cur.getX();
+        double curposY = cur.getY();
+
+        double var10 = Math.min(height, width) - 10.0D;
+        double posX = (width - var10) / 2.0D;
+        double posY = (height - var10) / 2.0D;
+        position_X = curposX + posX;
+        position_Y = curposY + posY;
+        robotSize = var10;
+        // parent.var4.repaint();
+        SwingUtilities.invokeLater(() -> parent.var4.repaint());
+    }
     private void privUpdate() {
         this.next = this.parent.fieldAt(this.model.getPosition());
         actionGo();
