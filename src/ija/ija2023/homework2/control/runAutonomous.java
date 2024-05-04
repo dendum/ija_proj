@@ -9,7 +9,7 @@ public class runAutonomous implements Runnable {
     private Environment e;
     private int sleep;
 
-    public runAutonomous(Robot new_r, Environment new_e, int new_sleep){
+    public runAutonomous(Robot new_r, Environment new_e, int new_sleep) {
         r = new_r;
         e = new_e;
         sleep = new_sleep;

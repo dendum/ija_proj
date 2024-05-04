@@ -6,6 +6,7 @@
 import ija.ija2023.homework2.room.ParserJSON;
 import org.json.simple.*;
 import ija.ija2023.homework2.control.runAutonomous;
+//import ija.ija2023.homework2.control.runOperated;
 import ija.ija2023.homework2.room.ControlledRobot;
 import ija.ija2023.homework2.room.Room;
 import tool.EnvPresenter;
@@ -60,18 +61,13 @@ public class Main {
 
         try {
             while (true) {
-                int[] robot_coordinates = queue.take();
-                Robot new_robot = ControlledRobot.create(room, new Position(robot_coordinates[1], robot_coordinates[0]));
-                presenter.add_thread_Robot(new_robot);
-                Runnable run = new runAutonomous(new_robot, room, 100);
-                threads.add(new Thread(run));
-                threads.get(threads.size()-1).start();
+                queue_processor(queue.take(), room, presenter, threads);
             }
         } catch (InterruptedException e) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
         }
 
-        for(Thread thread : threads){
+        for (Thread thread : threads) {
             try {
                 thread.join();
             } catch (InterruptedException e) {
@@ -114,8 +110,16 @@ public class Main {
         }
     }
 
-    public void queue_processor(){
-
+    public static void queue_processor(int[] robot_info, Environment room, EnvPresenter presenter, ArrayList<Thread> threads) {
+        Robot new_robot = ControlledRobot.create(room, new Position(robot_info[1], robot_info[0]));
+        presenter.add_thread_Robot(new_robot);
+        //Runnable run = (robot_info[2] == 1) ? new runAutonomous(new_robot, room, 100) : new runOperated(new_robot, room, 100);
+        if (robot_info[2] == 1) {
+            Runnable run = new runAutonomous(new_robot, room, 100);
+            threads.add(new Thread(run));
+            threads.get(threads.size() - 1).start();
+        } else {
+            presenter.setActiveRobot(new_robot);
+        }
     }
-
 }

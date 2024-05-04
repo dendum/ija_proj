@@ -1,8 +1,5 @@
 package tool;
 
-import ija.ija2023.homework2.common.Environment;
-import ija.ija2023.homework2.control.runAutonomous;
-import ija.ija2023.homework2.room.ControlledRobot;
 import ija.ija2023.homework2.common.Robot;
 import tool.common.Position;
 import tool.common.ToolEnvironment;
@@ -12,8 +9,7 @@ import tool.view.RobotView;
 import tool.view.MapView;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +27,7 @@ public class EnvPresenter {
     private JFrame frame;
     public MapView var4;
     private BlockingQueue<int[]> queue;
+    private Robot active_robot;
 
     public EnvPresenter(ToolEnvironment var1, BlockingQueue<int[]> q) {
         this.env = var1;
@@ -72,16 +69,93 @@ public class EnvPresenter {
         this.frame.setResizable(false);
         int var1 = this.env.rows();
         int var2 = this.env.cols();
+        active_robot = null;
         GridLayout var3 = new GridLayout(var1, var2);
         var4 = new MapView(var3, this.robots);
 
-        var4.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
+//        var4.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                System.out.println("Mouse clicked");
+//                if (e.getClickCount() == 2) {
+//                    System.out.println("Double click");
+//                    queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
+//                            (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 0});
+//                } else {
+//
+//                    if (e.getClickCount() == 1) {
+//                        System.out.println("Single click");
+//                        queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
+//                                (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 1});
+//                    }
+//                }
+//            }
+//        });
+
+        var4.addMouseListener(new ClickListener(){
+            public void singleClick(MouseEvent e){
+                System.out.println("single");
                 queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
-                        (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight())});
+                                (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 1});
+            }
+            public void doubleClick(MouseEvent e)
+            {
+                System.out.println("double");
+                queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
+                            (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 0});
             }
         });
+
+        //Arrows keys listener
+        var4.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false), "up pressed");
+        var4.getActionMap().put("up pressed", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (active_robot != null) {
+                    System.out.println("up key pressed");
+                    System.out.println("Angle is" + active_robot.angle());
+                    active_robot.move();
+                }
+            }
+        });
+
+        var4.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false), "down pressed");
+        var4.getActionMap().put("down pressed", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (active_robot != null) {
+                    System.out.println("down key pressed");
+                    active_robot.turn(4);
+                    System.out.println("Angle is" + active_robot.angle());
+                    active_robot.move();
+                }
+            }
+        });
+
+        var4.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, false), "left pressed");
+        var4.getActionMap().put("left pressed", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (active_robot != null) {
+                    System.out.println("left key pressed");
+                    active_robot.turn(-1);
+                    System.out.println("Angle is" + active_robot.angle());
+                }
+            }
+        });
+
+        var4.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false), "right pressed");
+        var4.getActionMap().put("right pressed", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (active_robot != null) {
+                    System.out.println("right key pressed");
+                    active_robot.turn();
+                    System.out.println("Angle is" + active_robot.angle());
+                }
+            }
+        });
+
 
         for (int var5 = 0; var5 < var1; ++var5) {
             for (int var6 = 0; var6 < var2; ++var6) {
@@ -99,6 +173,10 @@ public class EnvPresenter {
         });
         this.frame.getContentPane().add(var4, "Center");
         this.frame.pack();
+    }
+
+    public void setActiveRobot(Robot r) {
+        active_robot = r;
     }
 
     public void add_thread_Robot(ToolRobot robot) {
