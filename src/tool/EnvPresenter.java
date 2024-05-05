@@ -12,11 +12,10 @@ import tool.view.MapView;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -70,10 +69,8 @@ public class EnvPresenter {
     public FieldView fieldAt(Position var1) {
         return (FieldView) this.fields.get(var1);
     }
-
     private void initialize() {
         this.frame = new JFrame("Robot");
-
         JButton button = new JButton("Stop");
         button.setPreferredSize(new Dimension(130, 30));
         button.setBackground(Color.RED);
@@ -94,9 +91,25 @@ public class EnvPresenter {
             }
         });
 
+        JButton button3 = new JButton("Forward");
+        button3.setPreferredSize(new Dimension(130, 30));
+        button3.setBackground(Color.GRAY);
+        button3.addActionListener(actionEvent3 -> {
+
+        });
+
+        JButton button4 = new JButton("Rewind");
+        button4.setPreferredSize(new Dimension(130, 30));
+        button4.setBackground(Color.GRAY);
+        button4.addActionListener(actionEvent4 -> {
+
+        });
+
         JPanel button_panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        button_panel.add(button4);
         button_panel.add(button);
         button_panel.add(button2);
+        button_panel.add(button3);
 
         frame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -123,14 +136,15 @@ public class EnvPresenter {
         frame.add(button_panel, BorderLayout.NORTH);
 
         this.frame.setDefaultCloseOperation(3);
-        this.frame.setSize(350, 400);
-        this.frame.setPreferredSize(new Dimension(350, 400));
+        this.frame.setSize(800, 600);
+        this.frame.setPreferredSize(new Dimension(800, 600));
         this.frame.setResizable(true);
         int var1 = this.env.rows();
         int var2 = this.env.cols();
         active_robot = null;
         GridLayout var3 = new GridLayout(var1, var2);
         var4 = new MapView(var3, this.robots);
+        var4.setImage("data/Cat03.jpg");
 
         var4.addMouseListener(new ClickListener() {
             public void singleClick(MouseEvent e) {
@@ -144,6 +158,22 @@ public class EnvPresenter {
                 if (!stop[0]) {
                     queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
                             (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 0});
+                }
+            }
+        });
+
+        var4.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0, false), "q pressed");
+        var4.getActionMap().put("q pressed", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                File folder = new File("data");
+                File[] files = folder.listFiles();
+                if (files != null && files.length > 0) {
+                    Random random = new Random();
+                    File randomFile = files[random.nextInt(files.length)];
+                    var4.setImage("data/"+randomFile.getName());
+                } else {
+                    System.out.println("The specified directory is empty or does not exist.");
                 }
             }
         });
