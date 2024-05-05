@@ -1,5 +1,6 @@
 Name: Robot simulation
 Authors: Artem Vereninov (xveren00), Denys Dumych(xdumyc00)
+Version control: https://github.com/dendum/ija_proj
 
 Description
 
