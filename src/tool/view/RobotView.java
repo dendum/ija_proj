@@ -28,6 +28,8 @@ public class RobotView implements ComponentView, Observable.Observer {
     private Position nextPosition;
     private double position_X;
     private double position_Y;
+    private double angle_offset_X;
+    private double angle_offset_Y;
     double robotSize;
     private Timer movementTimer;
     boolean[] stop;
@@ -57,9 +59,52 @@ public class RobotView implements ComponentView, Observable.Observer {
         position_X = curposX + posX;
         position_Y = curposY + posY;
         robotSize = var10;
+        calculateAngle();
         // parent.var4.repaint();
         SwingUtilities.invokeLater(() -> parent.var4.repaint());
     }
+
+    private void calculateAngle() {
+        double offset_x = 0.0D;
+        double offset_y = 0.0D;
+        switch (this.model.angle()) {
+            case 0:
+                offset_x = robotSize / 2.0D;
+                offset_y = 0;
+                break;
+            case 45:
+                offset_x = robotSize * 3.0D / 4.0D;
+                offset_y = robotSize / 4.0D;
+                break;
+            case 90:
+                offset_x = robotSize;
+                offset_y = robotSize / 2.0D;
+                break;
+            case 135:
+                offset_x = robotSize * 3.0D / 4.0D;
+                offset_y = robotSize * 3.0D / 4.0D;
+                break;
+            case 180:
+                offset_x = robotSize / 2.0D;
+                offset_y = robotSize;
+                break;
+            case 225:
+                offset_x = robotSize / 4.0D;
+                offset_y = robotSize * 3.0D / 4.0D;
+                break;
+            case 270:
+                offset_x = 0;
+                offset_y = robotSize / 2.0D;
+                break;
+            case 315:
+                offset_x = robotSize / 4.0D;
+                offset_y = robotSize / 4.0D;
+        }
+
+        angle_offset_X = offset_x - 3.0D;
+        angle_offset_Y = offset_y - 3.0D;
+    }
+
     private void privUpdate() {
         this.next = this.parent.fieldAt(this.model.getPosition());
         actionGo();
@@ -67,8 +112,12 @@ public class RobotView implements ComponentView, Observable.Observer {
     }
 
     private void actionGo() {
-        if (current == next)
+        if (current == next) {
+            calculateAngle();
+            SwingUtilities.invokeLater(() -> parent.var4.repaint());
             return;
+        }
+
         Rectangle cur = this.current.getBounds();
         Rectangle nxt = this.next.getBounds();
 
@@ -207,6 +256,8 @@ public class RobotView implements ComponentView, Observable.Observer {
     public void draw(Graphics g) {
         g.setColor(Color.cyan);
         g.fillOval((int) position_X, (int) position_Y, (int) robotSize, (int) robotSize);
+        g.setColor(Color.black);
+        g.fillOval((int) (position_X + angle_offset_X), (int) (position_Y + angle_offset_Y), 6, 6);
     }
 
     public int numberUpdates() {
