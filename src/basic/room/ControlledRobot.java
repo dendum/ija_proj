@@ -67,6 +67,19 @@ public class ControlledRobot extends AbstractObservableRobot implements Robot {
     }
 
     @Override
+    public void setPosition(Position pos) {
+        env.moveRobot(this.pos, pos);
+        this.pos = pos;
+    }
+
+    @Override
+    public void setAngle(int angle) {
+        this.angle = angle;
+    }
+
+
+
+    @Override
     public Position getPosition() {
         return pos;
     }
