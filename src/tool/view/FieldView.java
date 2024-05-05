@@ -21,10 +21,6 @@ public class FieldView extends JPanel {
    }
    protected void paintComponent(Graphics var1) {
       super.paintComponent(var1);
-      if (this.obj != null) {
-         this.obj.paintComponent(var1);
-      }
-
    }
    private void privUpdate() {
       if (this.model.obstacleAt(this.position)) {

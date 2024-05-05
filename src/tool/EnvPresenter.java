@@ -315,8 +315,6 @@ public class EnvPresenter {
     }
 
     public void add_Obstacle(Position pos) {
-//        RobotView robotView = new RobotView(EnvPresenter.this, robot, stop, lock);
-//        robots.add(robotView);
         fields.get(pos).createObstacle();
     }
 
