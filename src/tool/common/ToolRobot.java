@@ -6,4 +6,8 @@ public interface ToolRobot extends Observable {
    void turn(int var1);
 
    Position getPosition();
+
+   void setPosition(Position pos);
+
+   void setAngle(int angle);
 }

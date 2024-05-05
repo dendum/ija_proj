@@ -31,9 +31,11 @@ public class EnvPresenter {
     ArrayList<Thread> threads;
     private Robot active_robot;
     private boolean in_process;
+    public Recorder recorder;
     final Object lock;
     boolean[] stop;
     boolean[] program_run;
+    public boolean[] changed;
 
     public EnvPresenter(ToolEnvironment var1, BlockingQueue<int[]> q, ArrayList<Thread> t, boolean[] p_r) {
         this.env = var1;
@@ -43,6 +45,7 @@ public class EnvPresenter {
         in_process = false;
         threads = t;
         stop = new boolean[1];
+        changed = new boolean[1];
         program_run = p_r;
         lock = new Object();
     }
@@ -89,20 +92,27 @@ public class EnvPresenter {
                 stop[0] = false;
                 lock.notifyAll();
             }
+            recorder.clearActions();
         });
 
         JButton button3 = new JButton("Forward");
         button3.setPreferredSize(new Dimension(130, 30));
         button3.setBackground(Color.GRAY);
         button3.addActionListener(actionEvent3 -> {
-
+            if (stop[0]) {
+                changed[0] = true;
+                recorder.forward();
+            }
         });
 
         JButton button4 = new JButton("Rewind");
         button4.setPreferredSize(new Dimension(130, 30));
         button4.setBackground(Color.GRAY);
         button4.addActionListener(actionEvent4 -> {
-
+            if (stop[0]) {
+                changed[0] = true;
+                recorder.rewind();
+            }
         });
 
         JPanel button_panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -265,8 +275,13 @@ public class EnvPresenter {
         this.frame.getContentPane().add(var4, "Center");
         this.frame.pack();
 
+        recorder = new Recorder();
+
         this.env.robots().forEach((var1x) -> {
             RobotView var2_1 = new RobotView(this, var1x, stop, lock);
+            var1x.addObserver(recorder);
+            recorder.addRobot(var1x, var2_1);
+            recorder.update(var1x);
             this.robots.add(var2_1);
         });
 
@@ -284,6 +299,9 @@ public class EnvPresenter {
     public void add_thread_Robot(ToolRobot robot) {
         RobotView robotView = new RobotView(EnvPresenter.this, robot, stop, lock);
         robots.add(robotView);
+        robot.addObserver(recorder);
+        recorder.addRobot(robot, robotView);
+        recorder.update(robot);
     }
 
     public void add_Obstacle(Position pos) {

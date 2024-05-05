@@ -23,15 +23,13 @@ public class RobotView implements ComponentView, Observable.Observer {
     private FieldView current;
     private FieldView next;
     private int changedModel = 0;
-
-    private Position currentPosition;
-    private Position nextPosition;
+    public Position previousPosition;
+    public Position currentPosition;
     private double position_X;
     private double position_Y;
     private double angle_offset_X;
     private double angle_offset_Y;
     double robotSize;
-    private Timer movementTimer;
     boolean[] stop;
     final Object lock;
 
@@ -47,6 +45,31 @@ public class RobotView implements ComponentView, Observable.Observer {
 
     private void firstDraw() {
         Rectangle cur = this.current.getBounds();
+        this.currentPosition = this.model.getPosition();
+        this.previousPosition = new Position(-1,-1);
+
+        double width = cur.getWidth();
+        double height = cur.getHeight();
+        double curposX = cur.getX();
+        double curposY = cur.getY();
+
+        double var10 = Math.min(height, width) - 10.0D;
+        double posX = (width - var10) / 2.0D;
+        double posY = (height - var10) / 2.0D;
+        position_X = curposX + posX;
+        position_Y = curposY + posY;
+        robotSize = var10;
+        calculateAngle();
+        // parent.var4.repaint();
+        SwingUtilities.invokeLater(() -> parent.var4.repaint());
+    }
+
+    public void needDraw() {
+        this.current = this.parent.fieldAt(this.model.getPosition());
+//        this.next = this.parent.fieldAt(this.model.getPosition());
+        this.previousPosition = currentPosition;
+        this.currentPosition = this.model.getPosition();
+        Rectangle cur =  this.current.getBounds();
 
         double width = cur.getWidth();
         double height = cur.getHeight();
@@ -107,6 +130,8 @@ public class RobotView implements ComponentView, Observable.Observer {
 
     private void privUpdate() {
         this.next = this.parent.fieldAt(this.model.getPosition());
+        previousPosition = currentPosition;
+        currentPosition = this.model.getPosition();
         actionGo();
         this.current = this.next;
     }
@@ -157,6 +182,13 @@ public class RobotView implements ComponentView, Observable.Observer {
                     }
                 }
             }
+
+            if (parent.changed[0]) {
+                parent.changed[0] = false;
+//                SwingUtilities.invokeLater(() -> parent.var4.repaint());
+                break;
+            }
+
             position_X += stepX;
             position_Y += stepY;
 
@@ -169,20 +201,6 @@ public class RobotView implements ComponentView, Observable.Observer {
             }
         }
 
-//        this.movementTimer = new Timer(10, new ActionListener() {
-//            public void actionPerformed(ActionEvent arg0) {
-//                position_X += stepX;
-//                position_Y += stepY;
-//
-//                parent.var4.repaint();
-//                SwingUtilities.invokeLater(() -> parent.var4.repaint());
-//
-//                if (Math.abs(position_X - dest_position_X) < 0.1 && Math.abs(position_Y - dest_position_Y) < 0.1) {
-//                    ((Timer) arg0.getSource()).stop();
-//                }
-//            }
-//        });
-//        movementTimer.start();
     }
 
     public final void update(Observable var1) {
