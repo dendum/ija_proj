@@ -10,6 +10,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+/**
+ * A class that represents the view of a robot in a robot simulation environment.
+ * @author Vereninov Artem
+ * @author Denys Dumych
+ */
 public class RobotView implements ComponentView, Observable.Observer {
     private final ToolRobot model;
     private final EnvPresenter parent;

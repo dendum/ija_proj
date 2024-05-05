@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 
 /**
  * FieldView class extends JPanel and represents a view for a single field in the environment.
+ * @author Vereninov Artem
+ * @author Denys Dumych
  */
 public class FieldView extends JPanel {
    private final ToolEnvironment model;

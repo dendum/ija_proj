@@ -5,7 +5,6 @@ import tool.common.Observable;
 import tool.common.Position;
 import tool.common.ToolRobot;
 import tool.view.RobotView;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,6 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The Recorder class is responsible for recording the movements and actions of ToolRobots.
+ * @author Vereninov Artem
+ * @author Denys Dumych
+ */
 public class Recorder implements Observable.Observer {
 
     private Map<ToolRobot, RobotView> robots = new HashMap<>();

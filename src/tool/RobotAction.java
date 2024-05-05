@@ -4,6 +4,12 @@ import tool.common.AbstractObservableRobot;
 import tool.common.Position;
 import tool.common.ToolRobot;
 
+/**
+ * The RobotAction class represents an action performed by a robot.
+ * It contains information about the robot, its previous position, current position, and angle.
+ * @author Vereninov Artem
+ * @author Denys Dumych
+ */
 public class RobotAction {
     private ToolRobot robot;
     private Position previousPosition;
