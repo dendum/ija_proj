@@ -38,7 +38,7 @@ public class Recorder implements Observable.Observer {
     public synchronized void update(Observable obj) {
         AbstractObservableRobot robot = (AbstractObservableRobot) obj;
 
-        String log = robot + "changed location: " + robots.get(robot).previousPosition + "@" +
+        String log = robot + " changed location: " + robots.get(robot).previousPosition + "@" +
                 robots.get(robot).currentPosition + "@" + robot.angle() + "\n";
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("logs.txt", true))) {
