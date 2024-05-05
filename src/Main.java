@@ -42,6 +42,8 @@ public class Main {
         ParserJSON parser = new ParserJSON();
         parser.parse();
         BlockingQueue<int[]> queue = new LinkedBlockingQueue<>();
+        boolean[] program_run = new boolean[1];
+        program_run[0] = true;
 
         Environment room = Room.create(((Long) parser.getRoom().get(0)).intValue(), ((Long) parser.getRoom().get(1)).intValue());
         Robot[] robots = new Robot[parser.getRobots().size()];
@@ -51,34 +53,22 @@ public class Main {
 
         ArrayList<Thread> threads = new ArrayList<Thread>();
 
-        EnvPresenter presenter = new EnvPresenter(room, queue, threads);
+        EnvPresenter presenter = new EnvPresenter(room, queue, threads, program_run);
         presenter.open();
 
         for (int i = 0; i < parser.getRobots().size(); i++) {
-            Runnable run = new runAutonomous(robots[i], room, sleep[i]);
+            Runnable run = new runAutonomous(robots[i], room, sleep[i], program_run);
             threads.add(new Thread(run));
             threads.get(i).start();
         }
 
         try {
             while (true) {
-                queue_processor(queue.take(), room, presenter, threads);
+                queue_processor(queue.take(), room, presenter, threads, program_run);
             }
         } catch (InterruptedException e) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
         }
-
-        for (Thread thread : threads) {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-//        for(int i = 0; i < all_robots; i++){
-//            threads[i].join();
-//        }
 
     }
 
@@ -110,7 +100,7 @@ public class Main {
         }
     }
 
-    public static void queue_processor(int[] robot_info, Environment room, EnvPresenter presenter, ArrayList<Thread> threads) {
+    public static void queue_processor(int[] robot_info, Environment room, EnvPresenter presenter, ArrayList<Thread> threads, boolean[] program_run) {
         if (robot_info[2] == 2) {
             if(room.createObstacleAt(robot_info[1], robot_info[0]))
                 presenter.add_Obstacle(new Position(robot_info[1], robot_info[0]));
@@ -119,7 +109,7 @@ public class Main {
             if (new_robot != null) {
                 presenter.add_thread_Robot(new_robot);
                 if (robot_info[2] == 1) {
-                    Runnable run = new runAutonomous(new_robot, room, 100);
+                    Runnable run = new runAutonomous(new_robot, room, 100, program_run);
                     threads.add(new Thread(run));
                     threads.get(threads.size() - 1).start();
                 } else {

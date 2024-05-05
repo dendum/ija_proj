@@ -34,8 +34,9 @@ public class EnvPresenter {
     private boolean in_process;
     final Object lock;
     boolean[] stop;
+    boolean[] program_run;
 
-    public EnvPresenter(ToolEnvironment var1, BlockingQueue<int[]> q, ArrayList<Thread> t) {
+    public EnvPresenter(ToolEnvironment var1, BlockingQueue<int[]> q, ArrayList<Thread> t, boolean[] p_r) {
         this.env = var1;
         this.queue = q;
         this.fields = new HashMap();
@@ -43,6 +44,7 @@ public class EnvPresenter {
         in_process = false;
         threads = t;
         stop = new boolean[1];
+        program_run = p_r;
         lock = new Object();
     }
 
@@ -95,6 +97,28 @@ public class EnvPresenter {
         JPanel button_panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         button_panel.add(button);
         button_panel.add(button2);
+
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                if (JOptionPane.showConfirmDialog(frame,
+                        "Are you sure you want to close this window?", "Close Window?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+                    program_run[0] = false;
+
+                    for (Thread thread : threads) {
+                        try {
+                            thread.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    frame.dispose();
+                }
+            }
+        });
 
         frame.add(button_panel, BorderLayout.NORTH);
 
@@ -220,7 +244,7 @@ public class EnvPresenter {
 
     public void setActiveRobot(Robot r, Environment room) {
         if (active_robot != null) {
-            Runnable run = new runAutonomous(active_robot, room, 100);
+            Runnable run = new runAutonomous(active_robot, room, 100, program_run);
             threads.add(new Thread(run));
             threads.get(threads.size() - 1).start();
         }

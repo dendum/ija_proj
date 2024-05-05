@@ -59,7 +59,10 @@ public class Room implements Environment {
 
     @Override
     public boolean obstacleAt(int row, int col) {
-        return room[row][col] instanceof Obstacle;
+        if(containsPosition(new Position(row, col)))
+            return room[row][col] instanceof Obstacle;
+        else
+            return false;
     }
 
     @Override
