@@ -130,8 +130,8 @@ public class EnvPresenter {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (active_robot != null && !in_process && !stop[0]) {
-                    System.out.println("up key pressed");
-                    System.out.println("Angle is" + active_robot.angle());
+                    //System.out.println("up key pressed");
+                    //System.out.println("Angle is" + active_robot.angle());
                     new SwingWorker<Void, Void>() {
                         @Override
                         protected Void doInBackground() {
@@ -150,13 +150,13 @@ public class EnvPresenter {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (active_robot != null && !in_process && !stop[0]) {
-                    System.out.println("down key pressed");
+                    //System.out.println("down key pressed");
                     new SwingWorker<Void, Void>() {
                         @Override
                         protected Void doInBackground() {
                             in_process = true;
                             active_robot.turn(4);
-                            System.out.println("Angle is" + active_robot.angle());
+                            //System.out.println("Angle is" + active_robot.angle());
                             active_robot.move();
                             in_process = false;
                             return null;
@@ -171,13 +171,13 @@ public class EnvPresenter {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (active_robot != null && !in_process && !stop[0]) {
-                    System.out.println("left key pressed");
+                    //System.out.println("left key pressed");
                     new SwingWorker<Void, Void>() {
                         @Override
                         protected Void doInBackground() {
                             in_process = true;
                             active_robot.turn(-1);
-                            System.out.println("Angle is" + active_robot.angle());
+                            //System.out.println("Angle is" + active_robot.angle());
                             in_process = false;
                             return null;
                         }
@@ -192,7 +192,7 @@ public class EnvPresenter {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (active_robot != null && !in_process && !stop[0]) {
-                    System.out.println("right key pressed");
+                    //System.out.println("right key pressed");
                     new SwingWorker<Void, Void>() {
                         @Override
                         protected Void doInBackground() {
@@ -202,7 +202,7 @@ public class EnvPresenter {
                             return null;
                         }
                     }.execute();
-                    System.out.println("Angle is" + active_robot.angle());
+                    //System.out.println("Angle is" + active_robot.angle());
                 }
             }
         });
