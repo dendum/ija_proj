@@ -70,13 +70,12 @@ public class EnvPresenter {
     }
 
     private void initialize() {
-        this.frame = new JFrame("Robot Environment Demo");
+        this.frame = new JFrame("Robot");
 
         JButton button = new JButton("Stop");
         button.setPreferredSize(new Dimension(130, 30));
         button.setBackground(Color.RED);
         button.addActionListener(actionEvent -> {
-            System.out.println("Stop pressed");
             synchronized (lock) {
                 stop[0] = true;
                 lock.notifyAll();
@@ -87,7 +86,6 @@ public class EnvPresenter {
         button2.setPreferredSize(new Dimension(130, 30));
         button2.setBackground(Color.GREEN);
         button2.addActionListener(actionEvent2 -> {
-            System.out.println("Start pressed");
             synchronized (lock) {
                 stop[0] = false;
                 lock.notifyAll();
@@ -113,7 +111,6 @@ public class EnvPresenter {
         var4.addMouseListener(new ClickListener() {
             public void singleClick(MouseEvent e) {
                 if (!stop[0]) {
-                    System.out.println("single");
                     queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
                             (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 1});
                 }
@@ -121,7 +118,6 @@ public class EnvPresenter {
 
             public void doubleClick(MouseEvent e) {
                 if (!stop[0]) {
-                    System.out.println("double");
                     queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
                             (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 0});
                 }
@@ -220,13 +216,14 @@ public class EnvPresenter {
             }
         }
 
+        this.frame.getContentPane().add(var4, "Center");
+        this.frame.pack();
 
         this.env.robots().forEach((var1x) -> {
             RobotView var2_1 = new RobotView(this, var1x, stop, lock);
             this.robots.add(var2_1);
         });
-        this.frame.getContentPane().add(var4, "Center");
-        this.frame.pack();
+
     }
 
     public void setActiveRobot(Robot r, Environment room) {
