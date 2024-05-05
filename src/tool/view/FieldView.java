@@ -41,7 +41,7 @@ public class FieldView extends JPanel {
       this.setBackground(Color.lightGray);
       this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
       this.setVisible(true);
-//      this.repaint();
+      this.repaint();
    }
 
    public void addComponent(ComponentView var1) {

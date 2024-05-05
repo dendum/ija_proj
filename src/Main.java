@@ -111,14 +111,21 @@ public class Main {
     }
 
     public static void queue_processor(int[] robot_info, Environment room, EnvPresenter presenter, ArrayList<Thread> threads) {
-        Robot new_robot = ControlledRobot.create(room, new Position(robot_info[1], robot_info[0]));
-        presenter.add_thread_Robot(new_robot);
-        if (robot_info[2] == 1) {
-            Runnable run = new runAutonomous(new_robot, room, 100);
-            threads.add(new Thread(run));
-            threads.get(threads.size() - 1).start();
+        if (robot_info[2] == 2) {
+            if(room.createObstacleAt(robot_info[1], robot_info[0]))
+                presenter.add_Obstacle(new Position(robot_info[1], robot_info[0]));
         } else {
-            presenter.setActiveRobot(new_robot, room);
+            Robot new_robot = ControlledRobot.create(room, new Position(robot_info[1], robot_info[0]));
+            if (new_robot != null) {
+                presenter.add_thread_Robot(new_robot);
+                if (robot_info[2] == 1) {
+                    Runnable run = new runAutonomous(new_robot, room, 100);
+                    threads.add(new Thread(run));
+                    threads.get(threads.size() - 1).start();
+                } else {
+                    presenter.setActiveRobot(new_robot, room);
+                }
+            }
         }
     }
 }
