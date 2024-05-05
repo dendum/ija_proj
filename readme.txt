@@ -21,6 +21,7 @@ Single click (right mouse button) - adding new obstacle to the field
 Double click (left mouse button) - adding new manually operated robot
 Q - changing backgrounds
 Arrows - moving robot around
+Operating with time is done by interactive buttons in the application window
 
 Program execution (should be executed in the root directory)
 * mvn compile
