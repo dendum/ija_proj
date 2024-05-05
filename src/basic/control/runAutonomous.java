@@ -3,6 +3,11 @@ package basic.control;
 import basic.common.Environment;
 import basic.common.Robot;
 
+/**
+ * The runAutonomous class implements the Runnable interface to provide a runnable task for running autonomous logic on a robot.
+ * @author Vereninov Artem
+ * @author Dumych Denys
+ */
 public class runAutonomous implements Runnable {
 
     private Robot r;
@@ -16,7 +21,6 @@ public class runAutonomous implements Runnable {
         sleep = new_sleep;
         program_run = p_r;
     }
-
     @Override
     public void run() {
         Autonomous.handleAutonomous(r, e, sleep, program_run);

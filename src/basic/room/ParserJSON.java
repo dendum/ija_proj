@@ -11,6 +11,11 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The ParserJSON class is responsible for parsing a JSON file and extracting data to create initial field
+ * @author Artem Vereninov
+ * @author Denys Dumych
+ */
 public class ParserJSON {
     private JSONArray obstacleArray;
     private JSONArray robotArray;

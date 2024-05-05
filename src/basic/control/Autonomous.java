@@ -6,6 +6,11 @@ import basic.common.Robot;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The Autonomous class provides simple logic for autonomous robots
+ * @author Vereninov Artem
+ * @author Denys Dumych
+ */
 public class Autonomous {
     public static void handleAutonomous(Robot r, Environment e, int sleep, boolean[] program_run) {
         while (program_run[0]) {

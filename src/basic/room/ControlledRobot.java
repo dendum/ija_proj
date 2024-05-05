@@ -5,6 +5,12 @@ import basic.common.Robot;
 import tool.common.AbstractObservableRobot;
 import tool.common.Position;
 
+/**
+ * The ControlledRobot class represents a robot that can be controlled to move within an environment.
+ * It extends the AbstractObservableRobot class and implements the Robot interface.
+ * @author Vereninov Artem
+ * @author Denys Dumych
+ */
 public class ControlledRobot extends AbstractObservableRobot implements Robot {
 
     private Position pos;

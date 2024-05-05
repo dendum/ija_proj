@@ -1,5 +1,10 @@
 package tool.common;
 
+/**
+ * The Position class represents a position in a coordinate system with x and y coordinates.
+ * @author Artem Verninov
+ * @author Dumych Denys
+ */
 public class Position {
    private final int x;
    private final int y;

@@ -4,7 +4,6 @@ import basic.control.runAutonomous;
 import basic.room.ControlledRobot;
 import basic.room.Room;
 import tool.EnvPresenter;
-
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -22,7 +21,6 @@ import basic.common.Environment;
  * @author Denys Dumych
  */
 public class Main {
-
     public static void main(String... args) {
 
         ParserJSON parser = new ParserJSON();

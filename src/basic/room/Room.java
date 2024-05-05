@@ -9,6 +9,11 @@ import tool.common.ToolRobot;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Room class represents a room in an environment.
+ * @author Denys Dumych
+ * @author Artem Vereninov
+ */
 public class Room implements Environment {
 
     private Object[][] room;

@@ -7,11 +7,13 @@ import java.awt.Graphics;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+/**
+ * FieldView class extends JPanel and represents a view for a single field in the environment.
+ */
 public class FieldView extends JPanel {
    private final ToolEnvironment model;
    private final Position position;
    private ComponentView obj;
-   private int changedModel = 0;
    public FieldView(ToolEnvironment var1, Position var2) {
       this.model = var1;
       this.position = var2;
