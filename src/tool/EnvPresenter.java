@@ -112,7 +112,7 @@ public class EnvPresenter {
             public void singleClick(MouseEvent e) {
                 if (!stop[0]) {
                     queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
-                            (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 1});
+                            (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), SwingUtilities.isRightMouseButton(e) ? 2 : 1});
                 }
             }
 
@@ -230,6 +230,12 @@ public class EnvPresenter {
     public void add_thread_Robot(ToolRobot robot) {
         RobotView robotView = new RobotView(EnvPresenter.this, robot, stop, lock);
         robots.add(robotView);
+    }
+
+    public void add_Obstacle(Position pos) {
+//        RobotView robotView = new RobotView(EnvPresenter.this, robot, stop, lock);
+//        robots.add(robotView);
+        fields.get(pos).createObstacle();
     }
 
     protected List<FieldView> fields() {

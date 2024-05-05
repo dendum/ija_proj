@@ -28,17 +28,20 @@ public class FieldView extends JPanel {
    }
 
    private void privUpdate() {
-      this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
       if (this.model.obstacleAt(this.position)) {
          this.setBackground(Color.lightGray);
          this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
       } else {
-         //
-//         this.setOpaque(true);
          this.setVisible(false);
-         //
       }
 
+   }
+
+   public void createObstacle() {
+      this.setBackground(Color.lightGray);
+      this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+      this.setVisible(true);
+//      this.repaint();
    }
 
    public void addComponent(ComponentView var1) {
