@@ -12,13 +12,11 @@ public class FieldView extends JPanel {
    private final Position position;
    private ComponentView obj;
    private int changedModel = 0;
-
    public FieldView(ToolEnvironment var1, Position var2) {
       this.model = var1;
       this.position = var2;
       this.privUpdate();
    }
-
    protected void paintComponent(Graphics var1) {
       super.paintComponent(var1);
       if (this.obj != null) {
@@ -26,7 +24,6 @@ public class FieldView extends JPanel {
       }
 
    }
-
    private void privUpdate() {
       if (this.model.obstacleAt(this.position)) {
          this.setBackground(Color.lightGray);
@@ -36,7 +33,6 @@ public class FieldView extends JPanel {
       }
 
    }
-
    public void createObstacle() {
       this.setBackground(Color.lightGray);
       this.setBorder(BorderFactory.createLineBorder(Color.BLACK));

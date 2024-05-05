@@ -21,6 +21,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
+/**
+ * The EnvPresenter class is responsible for presenting and interacting with the environment.
+ * It provides methods for initializing the environment view, handling user input, and updating the environment state.
+ * @author Denys Dumych
+ * @author Vereninov Artem
+ */
 public class EnvPresenter {
     private final ToolEnvironment env;
     private Map<Position, FieldView> fields;

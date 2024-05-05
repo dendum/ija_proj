@@ -15,9 +15,11 @@ import basic.common.Robot;
 import basic.common.Environment;
 
 /**
- * This class represents the main entry point of the program.
- * It initializes the environment, robots, and other necessary objects,
- * and runs the simulation.
+ * The Main class is the entry point for the program. It initializes the environment, robots, and presenter,
+ * and starts the threads for the robots.
+ * It also processes the queue of objects that should be added and updates the presenter
+ * @author Vereninov Artem
+ * @author Denys Dumych
  */
 public class Main {
 
@@ -80,7 +82,7 @@ public class Main {
             if (new_robot != null) {
                 presenter.add_thread_Robot(new_robot);
                 if (robot_info[2] == 1) {
-                    Runnable run = new runAutonomous(new_robot, room, 100, program_run);
+                    Runnable run = new runAutonomous(new_robot, room, 50, program_run);
                     threads.add(new Thread(run));
                     threads.get(threads.size() - 1).start();
                 } else {

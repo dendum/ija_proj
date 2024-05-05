@@ -10,12 +10,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D.Double;
-
-// TODO
-// SwingUtilities.invokeLater(() -> mapPanel.repaint());
 
 public class RobotView implements ComponentView, Observable.Observer {
     private final ToolRobot model;
@@ -160,7 +155,6 @@ public class RobotView implements ComponentView, Observable.Observer {
             position_X += stepX;
             position_Y += stepY;
 
-//                parent.var4.repaint();
             SwingUtilities.invokeLater(() -> parent.var4.repaint());
             try {
                 Thread.sleep(10);
@@ -168,21 +162,6 @@ public class RobotView implements ComponentView, Observable.Observer {
                 throw new RuntimeException(e);
             }
         }
-
-//        this.movementTimer = new Timer(10, new ActionListener() {
-//            public void actionPerformed(ActionEvent arg0) {
-//                position_X += stepX;
-//                position_Y += stepY;
-//
-//                parent.var4.repaint();
-//                SwingUtilities.invokeLater(() -> parent.var4.repaint());
-//
-//                if (Math.abs(position_X - dest_position_X) < 0.1 && Math.abs(position_Y - dest_position_Y) < 0.1) {
-//                    ((Timer) arg0.getSource()).stop();
-//                }
-//            }
-//        });
-//        movementTimer.start();
     }
 
     public final void update(Observable var1) {
@@ -196,10 +175,6 @@ public class RobotView implements ComponentView, Observable.Observer {
         Rectangle var3 = this.current.getBounds();
         double var4 = var3.getWidth();
         double var6 = var3.getHeight();
-        double posX = var3.getX();
-        double posY = var3.getY();
-
-//      System.out.println(changedModel + ": x=" + posX + ", y=" + posY);
 
         Math.max(var6, var4);
         double var10 = Math.min(var6, var4) - 10.0D;

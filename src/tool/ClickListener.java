@@ -1,12 +1,14 @@
 package tool;
-import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 
+/**
+ * The ClickListener class is a class that extends MouseAdapter and implements ActionListener.
+ * Class is used to identify double and single clicks
+ * @author Vereninov Artem
+ * @author Denys Dumych
+ */
 public class ClickListener extends MouseAdapter implements ActionListener{
-//    private final static int clickInterval = (Integer)Toolkit.getDefaultToolkit().
-//            getDesktopProperty("awt.multiClickInterval");
     private final static int clickInterval = 300;
     MouseEvent lastEvent;
     Timer timer;
