@@ -1,14 +1,8 @@
-/*
- * IJA 2022/23: Úloha 2
- * Spuštění presentéru (vizualizace) implementace modelu bludiště.
- */
-
-import ija.ija2023.homework2.room.ParserJSON;
+import basic.room.ParserJSON;
 import org.json.simple.*;
-import ija.ija2023.homework2.control.runAutonomous;
-//import ija.ija2023.homework2.control.runOperated;
-import ija.ija2023.homework2.room.ControlledRobot;
-import ija.ija2023.homework2.room.Room;
+import basic.control.runAutonomous;
+import basic.room.ControlledRobot;
+import basic.room.Room;
 import tool.EnvPresenter;
 
 import java.util.ArrayList;
@@ -16,24 +10,14 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-
-//--- Importy z implementovaneho reseni ukolu
-
-//--- 
-
-//--- Importy z baliku dodaneho nastroje
-
 import tool.common.Position;
-import ija.ija2023.homework2.common.Robot;
-import ija.ija2023.homework2.common.Environment;
+import basic.common.Robot;
+import basic.common.Environment;
 
 /**
- * Třída spustí vizualizaci implementace modelu bludiště.
- * Prezentér je implementován třídou {@link EnvPresenter}, dále využívá prostředky definované
- * v balíku ija.ija2022.homework2.common, který je součástí dodaného nástroje.
- *
- * @author Radek Kočí
+ * This class represents the main entry point of the program.
+ * It initializes the environment, robots, and other necessary objects,
+ * and runs the simulation.
  */
 public class Main {
 
@@ -70,19 +54,6 @@ public class Main {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
         }
 
-    }
-
-    /**
-     * Uspani vlakna na zadany pocet ms.
-     *
-     * @param ms Pocet ms pro uspani vlakna.
-     */
-    public static void sleep(int ms) {
-        try {
-            Thread.sleep(ms);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     public static void init(Environment room, Robot[] robots, int[] sleep, ParserJSON parser) {

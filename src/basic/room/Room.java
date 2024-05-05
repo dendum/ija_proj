@@ -1,9 +1,9 @@
-package ija.ija2023.homework2.room;
+package basic.room;
 
-import ija.ija2023.homework2.common.Environment;
+import basic.common.Environment;
+import basic.common.Obstacle;
 import tool.common.Position;
-import ija.ija2023.homework2.common.Obstacle;
-import ija.ija2023.homework2.common.Robot;
+import basic.common.Robot;
 import tool.common.ToolRobot;
 
 import java.util.ArrayList;

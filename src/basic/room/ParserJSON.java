@@ -1,6 +1,6 @@
-package ija.ija2023.homework2.room;
+package basic.room;
 
-import ija.ija2023.homework2.control.Autonomous;
+import basic.control.Autonomous;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -20,7 +20,7 @@ public class ParserJSON {
         Object obj = null;
 
         try{
-            obj = new JSONParser().parse(new FileReader("src/field.json"));
+            obj = new JSONParser().parse(new FileReader("data/field.json"));
         }catch (IOException | ParseException ex){
             Logger.getLogger(Autonomous.class.getName()).log(Level.SEVERE, null, ex);
         }

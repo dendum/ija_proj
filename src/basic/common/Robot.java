@@ -1,4 +1,4 @@
-package ija.ija2023.homework2.common;
+package basic.common;
 
 import tool.common.Position;
 import tool.common.ToolRobot;

@@ -1,8 +1,8 @@
 package tool;
 
-import ija.ija2023.homework2.common.Environment;
-import ija.ija2023.homework2.common.Robot;
-import ija.ija2023.homework2.control.runAutonomous;
+import basic.common.Environment;
+import basic.common.Robot;
+import basic.control.runAutonomous;
 import tool.common.Position;
 import tool.common.ToolEnvironment;
 import tool.common.ToolRobot;
@@ -47,7 +47,7 @@ public class EnvPresenter {
         stop = new boolean[1];
         program_run = p_r;
         lock = new Object();
-        File folder = new File("data");
+        File folder = new File("data/img/");
         files = folder.listFiles();
         backgound_counter = 0;
     }
@@ -149,7 +149,7 @@ public class EnvPresenter {
         active_robot = null;
         GridLayout var3 = new GridLayout(var1, var2);
         var4 = new MapView(var3, this.robots);
-        var4.setImage("data/default.jpg");
+        var4.setImage("data/img/default.jpg");
 
         var4.addMouseListener(new ClickListener() {
             public void singleClick(MouseEvent e) {
@@ -158,7 +158,6 @@ public class EnvPresenter {
                             (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), SwingUtilities.isRightMouseButton(e) ? 2 : 1});
                 }
             }
-
             public void doubleClick(MouseEvent e) {
                 if (!stop[0]) {
                     queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
@@ -173,7 +172,7 @@ public class EnvPresenter {
             public void actionPerformed(ActionEvent e) {
                 if (files != null && files.length > 0) {
                     File picture = files[backgound_counter];
-                    var4.setImage("data/"+picture.getName());
+                    var4.setImage("data/img/"+picture.getName());
                     backgound_counter++;
                     if(backgound_counter == files.length)
                         backgound_counter = 0;

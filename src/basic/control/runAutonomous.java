@@ -1,7 +1,7 @@
-package ija.ija2023.homework2.control;
+package basic.control;
 
-import ija.ija2023.homework2.common.Environment;
-import ija.ija2023.homework2.common.Robot;
+import basic.common.Environment;
+import basic.common.Robot;
 
 public class runAutonomous implements Runnable {
 

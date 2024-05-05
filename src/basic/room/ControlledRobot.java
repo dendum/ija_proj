@@ -1,9 +1,9 @@
-package ija.ija2023.homework2.room;
+package basic.room;
 
-import ija.ija2023.homework2.common.Environment;
+import basic.common.Environment;
+import basic.common.Robot;
 import tool.common.AbstractObservableRobot;
 import tool.common.Position;
-import ija.ija2023.homework2.common.Robot;
 
 public class ControlledRobot extends AbstractObservableRobot implements Robot {
 
