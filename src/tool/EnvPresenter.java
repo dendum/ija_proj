@@ -34,6 +34,8 @@ public class EnvPresenter {
     final Object lock;
     boolean[] stop;
     boolean[] program_run;
+    File[] files;
+    int backgound_counter;
 
     public EnvPresenter(ToolEnvironment var1, BlockingQueue<int[]> q, ArrayList<Thread> t, boolean[] p_r) {
         this.env = var1;
@@ -45,6 +47,9 @@ public class EnvPresenter {
         stop = new boolean[1];
         program_run = p_r;
         lock = new Object();
+        File folder = new File("data");
+        files = folder.listFiles();
+        backgound_counter = 0;
     }
 
     public void open() {
@@ -116,7 +121,7 @@ public class EnvPresenter {
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 if (JOptionPane.showConfirmDialog(frame,
                         "Are you sure you want to close this window?", "Close Window?",
-                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.DEFAULT_OPTION,
                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
                     program_run[0] = false;
 
@@ -144,7 +149,7 @@ public class EnvPresenter {
         active_robot = null;
         GridLayout var3 = new GridLayout(var1, var2);
         var4 = new MapView(var3, this.robots);
-        var4.setImage("data/Cat03.jpg");
+        var4.setImage("data/default.jpg");
 
         var4.addMouseListener(new ClickListener() {
             public void singleClick(MouseEvent e) {
@@ -166,12 +171,12 @@ public class EnvPresenter {
         var4.getActionMap().put("q pressed", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                File folder = new File("data");
-                File[] files = folder.listFiles();
                 if (files != null && files.length > 0) {
-                    Random random = new Random();
-                    File randomFile = files[random.nextInt(files.length)];
-                    var4.setImage("data/"+randomFile.getName());
+                    File picture = files[backgound_counter];
+                    var4.setImage("data/"+picture.getName());
+                    backgound_counter++;
+                    if(backgound_counter == files.length)
+                        backgound_counter = 0;
                 } else {
                     System.out.println("The specified directory is empty or does not exist.");
                 }
