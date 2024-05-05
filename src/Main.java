@@ -49,10 +49,11 @@ public class Main {
 
         init(room, robots, sleep, parser);
 
-        EnvPresenter presenter = new EnvPresenter(room, queue);
+        ArrayList<Thread> threads = new ArrayList<Thread>();
+
+        EnvPresenter presenter = new EnvPresenter(room, queue, threads);
         presenter.open();
 
-        ArrayList<Thread> threads = new ArrayList<Thread>();
         for (int i = 0; i < parser.getRobots().size(); i++) {
             Runnable run = new runAutonomous(robots[i], room, sleep[i]);
             threads.add(new Thread(run));
@@ -74,6 +75,7 @@ public class Main {
                 e.printStackTrace();
             }
         }
+
 //        for(int i = 0; i < all_robots; i++){
 //            threads[i].join();
 //        }
@@ -116,7 +118,7 @@ public class Main {
             threads.add(new Thread(run));
             threads.get(threads.size() - 1).start();
         } else {
-            presenter.setActiveRobot(new_robot);
+            presenter.setActiveRobot(new_robot, room);
         }
     }
 }

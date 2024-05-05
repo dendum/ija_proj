@@ -1,6 +1,8 @@
 package tool;
 
+import ija.ija2023.homework2.common.Environment;
 import ija.ija2023.homework2.common.Robot;
+import ija.ija2023.homework2.control.runAutonomous;
 import tool.common.Position;
 import tool.common.ToolEnvironment;
 import tool.common.ToolRobot;
@@ -27,16 +29,17 @@ public class EnvPresenter {
     private JFrame frame;
     public MapView var4;
     private BlockingQueue<int[]> queue;
+    ArrayList<Thread> threads;
     private Robot active_robot;
-
     private boolean in_process;
 
-    public EnvPresenter(ToolEnvironment var1, BlockingQueue<int[]> q) {
+    public EnvPresenter(ToolEnvironment var1, BlockingQueue<int[]> q, ArrayList<Thread> t) {
         this.env = var1;
         this.queue = q;
         this.fields = new HashMap();
         this.robots = new ArrayList();
         in_process = false;
+        threads = t;
     }
 
     public void open() {
@@ -96,17 +99,17 @@ public class EnvPresenter {
 //        });
 
 
-        var4.addMouseListener(new ClickListener(){
-            public void singleClick(MouseEvent e){
+        var4.addMouseListener(new ClickListener() {
+            public void singleClick(MouseEvent e) {
                 System.out.println("single");
                 queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
-                                (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 1});
+                        (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 1});
             }
-            public void doubleClick(MouseEvent e)
-            {
+
+            public void doubleClick(MouseEvent e) {
                 System.out.println("double");
                 queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
-                            (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 0});
+                        (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 0});
             }
         });
 
@@ -238,7 +241,12 @@ public class EnvPresenter {
         this.frame.pack();
     }
 
-    public void setActiveRobot(Robot r) {
+    public void setActiveRobot(Robot r, Environment room) {
+        if (active_robot != null) {
+            Runnable run = new runAutonomous(active_robot, room, 100);
+            threads.add(new Thread(run));
+            threads.get(threads.size() - 1).start();
+        }
         active_robot = r;
     }
 
