@@ -29,16 +29,18 @@ public class RobotView implements ComponentView, Observable.Observer {
     private double position_X;
     private double position_Y;
     double robotSize;
-
     private Timer movementTimer;
+    boolean[] stop;
+    final Object lock;
 
-    public RobotView(EnvPresenter var1, ToolRobot var2) {
+    public RobotView(EnvPresenter var1, ToolRobot var2, boolean[] s, Object l) {
         this.model = var2;
         this.parent = var1;
         var2.addObserver(this);
         this.current = this.parent.fieldAt(this.model.getPosition());
         firstDraw();
-//      this.privUpdate();
+        stop = s;
+        lock = l;
     }
 
     private void firstDraw() {
@@ -96,6 +98,16 @@ public class RobotView implements ComponentView, Observable.Observer {
         double stepY = dy / 100;
 
         while (!(Math.abs(position_X - dest_position_X) < 0.1 && Math.abs(position_Y - dest_position_Y) < 0.1)) {
+            synchronized (lock) {
+                while (stop[0]) {
+                    try {
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
             position_X += stepX;
             position_Y += stepY;
 

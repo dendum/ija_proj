@@ -32,6 +32,8 @@ public class EnvPresenter {
     ArrayList<Thread> threads;
     private Robot active_robot;
     private boolean in_process;
+    final Object lock;
+    boolean[] stop;
 
     public EnvPresenter(ToolEnvironment var1, BlockingQueue<int[]> q, ArrayList<Thread> t) {
         this.env = var1;
@@ -40,6 +42,8 @@ public class EnvPresenter {
         this.robots = new ArrayList();
         in_process = false;
         threads = t;
+        stop = new boolean[1];
+        lock = new Object();
     }
 
     public void open() {
@@ -51,7 +55,6 @@ public class EnvPresenter {
         } catch (InvocationTargetException | InterruptedException var2) {
             Logger.getLogger(EnvPresenter.class.getName()).log(Level.SEVERE, (String) null, var2);
         }
-
     }
 
     protected void init() {
@@ -60,7 +63,6 @@ public class EnvPresenter {
         } catch (InvocationTargetException | InterruptedException var2) {
             Logger.getLogger(EnvPresenter.class.getName()).log(Level.SEVERE, (String) null, var2);
         }
-
     }
 
     public FieldView fieldAt(Position var1) {
@@ -69,81 +71,69 @@ public class EnvPresenter {
 
     private void initialize() {
         this.frame = new JFrame("Robot Environment Demo");
+
+        JButton button = new JButton("Stop");
+        button.setPreferredSize(new Dimension(130, 30));
+        button.setBackground(Color.RED);
+        button.addActionListener(actionEvent -> {
+            System.out.println("Stop pressed");
+            synchronized (lock) {
+                stop[0] = true;
+                lock.notifyAll();
+            }
+        });
+
+        JButton button2 = new JButton("Continue");
+        button2.setPreferredSize(new Dimension(130, 30));
+        button2.setBackground(Color.GREEN);
+        button2.addActionListener(actionEvent2 -> {
+            System.out.println("Start pressed");
+            synchronized (lock) {
+                stop[0] = false;
+                lock.notifyAll();
+            }
+        });
+
+        JPanel button_panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        button_panel.add(button);
+        button_panel.add(button2);
+
+        frame.add(button_panel, BorderLayout.NORTH);
+
         this.frame.setDefaultCloseOperation(3);
         this.frame.setSize(350, 400);
         this.frame.setPreferredSize(new Dimension(350, 400));
-        this.frame.setResizable(false);
+        this.frame.setResizable(true);
         int var1 = this.env.rows();
         int var2 = this.env.cols();
         active_robot = null;
         GridLayout var3 = new GridLayout(var1, var2);
         var4 = new MapView(var3, this.robots);
 
-//        var4.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                System.out.println("Mouse clicked");
-//                if (e.getClickCount() == 2) {
-//                    System.out.println("Double click");
-//                    queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
-//                            (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 0});
-//                } else {
-//
-//                    if (e.getClickCount() == 1) {
-//                        System.out.println("Single click");
-//                        queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
-//                                (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 1});
-//                    }
-//                }
-//            }
-//        });
-
-
         var4.addMouseListener(new ClickListener() {
             public void singleClick(MouseEvent e) {
-                System.out.println("single");
-                queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
-                        (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 1});
+                if (!stop[0]) {
+                    System.out.println("single");
+                    queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
+                            (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 1});
+                }
             }
 
             public void doubleClick(MouseEvent e) {
-                System.out.println("double");
-                queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
-                        (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 0});
+                if (!stop[0]) {
+                    System.out.println("double");
+                    queue.add(new int[]{(int) (e.getPoint().x / fields.get(new Position(0, 0)).getWidth()),
+                            (int) (e.getPoint().y / fields.get(new Position(0, 0)).getHeight()), 0});
+                }
             }
         });
-
-//        var4.setFocusable(true);
-//        var4.requestFocusInWindow();
-//
-//        var4.addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyPressed(KeyEvent e) {
-//                int keyCode = e.getKeyCode();
-//                char keyChar = e.getKeyChar();
-//                System.out.println("Key code: " + keyCode + ", Key character: " + keyChar);
-//                if (keyCode == 38) {
-//                    System.out.println("up key pressed");
-//                    System.out.println("Angle is" + active_robot.angle());
-//
-////                    active_robot.move();
-//                    new SwingWorker<Void, Void>() {
-//                        @Override
-//                        protected Void doInBackground() {
-//                            active_robot.move();
-//                            return null;
-//                        }
-//                    }.execute();
-//                }
-//            }
-//        });
 
         //Arrows keys listener
         var4.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false), "up pressed");
         var4.getActionMap().put("up pressed", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (active_robot != null && !in_process) {
+                if (active_robot != null && !in_process && !stop[0]) {
                     System.out.println("up key pressed");
                     System.out.println("Angle is" + active_robot.angle());
                     new SwingWorker<Void, Void>() {
@@ -153,7 +143,6 @@ public class EnvPresenter {
                             active_robot.move();
                             in_process = false;
                             return null;
-
                         }
                     }.execute();
                 }
@@ -164,7 +153,7 @@ public class EnvPresenter {
         var4.getActionMap().put("down pressed", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (active_robot != null && !in_process) {
+                if (active_robot != null && !in_process && !stop[0]) {
                     System.out.println("down key pressed");
                     new SwingWorker<Void, Void>() {
                         @Override
@@ -185,7 +174,7 @@ public class EnvPresenter {
         var4.getActionMap().put("left pressed", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (active_robot != null && !in_process) {
+                if (active_robot != null && !in_process && !stop[0]) {
                     System.out.println("left key pressed");
                     new SwingWorker<Void, Void>() {
                         @Override
@@ -206,7 +195,7 @@ public class EnvPresenter {
         var4.getActionMap().put("right pressed", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (active_robot != null && !in_process) {
+                if (active_robot != null && !in_process && !stop[0]) {
                     System.out.println("right key pressed");
                     new SwingWorker<Void, Void>() {
                         @Override
@@ -222,7 +211,6 @@ public class EnvPresenter {
             }
         });
 
-
         for (int var5 = 0; var5 < var1; ++var5) {
             for (int var6 = 0; var6 < var2; ++var6) {
                 Position var7 = new Position(var5, var6);
@@ -234,7 +222,7 @@ public class EnvPresenter {
 
 
         this.env.robots().forEach((var1x) -> {
-            RobotView var2_1 = new RobotView(this, var1x);
+            RobotView var2_1 = new RobotView(this, var1x, stop, lock);
             this.robots.add(var2_1);
         });
         this.frame.getContentPane().add(var4, "Center");
@@ -251,7 +239,7 @@ public class EnvPresenter {
     }
 
     public void add_thread_Robot(ToolRobot robot) {
-        RobotView robotView = new RobotView(EnvPresenter.this, robot);
+        RobotView robotView = new RobotView(EnvPresenter.this, robot, stop, lock);
         robots.add(robotView);
     }
 
